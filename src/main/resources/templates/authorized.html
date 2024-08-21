@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Authorized Page</title>
+</head>
+<body>
+<h1>Authorized Page</h1>
+<button onclick="showAuthorizedPage()">Authorized Button</button>
+<form th:action="@{/logout}" method="post">
+    <input type="submit" value="Logout"/>
+</form>
+
+<script th:inline="javascript">
+    function showAuthorizedPage() {
+        if ([[${isAdmin}]]) {
+            window.location.href = "/authorized/admin";
+        } else {
+            alert("You are not authorized to view this page.");
+        }
+    }
+</script>
+</body>
+</html>

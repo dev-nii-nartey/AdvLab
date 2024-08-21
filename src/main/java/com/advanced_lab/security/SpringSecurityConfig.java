@@ -16,34 +16,50 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SpringSecurityConfig {
 
     @Bean
-    public static PasswordEncoder passwordEncoder(){
+    public static PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests((authorize) -> {
-                    authorize.anyRequest().authenticated();
-                }).httpBasic(Customizer.withDefaults());
-        return http.build();
+    public UserDetailsService userDetailsService() {
+        InMemoryUserDetailsManager userDetailsManager = new InMemoryUserDetailsManager();
+
+        // Check if the "Nii" user already exists
+        if (!userDetailsManager.userExists("nat")) {
+            UserDetails nii = User.builder()
+                    .username("nat")
+                    .password(passwordEncoder().encode("pass"))
+                    .roles("USER")
+                    .build();
+            userDetailsManager.createUser(nii);
+        }
+
+        // Check if the "nii" user already exists
+        if (!userDetailsManager.userExists("nii")) {
+            UserDetails admin = User.builder()
+                    .username("nii")
+                    .password(passwordEncoder().encode("password"))
+                    .roles("ADMIN")
+                    .build();
+            userDetailsManager.createUser(admin);
+        }
+
+        return userDetailsManager;
     }
 
     @Bean
-    public UserDetailsService userDetailsService(){
-
-        UserDetails ramesh = User.builder()
-                .username("Nii")
-                .password(passwordEncoder().encode("password"))
-                .roles("USER")
-                .build();
-
-        UserDetails admin = User.builder()
-                .username("nii")
-                .password(passwordEncoder().encode("pass"))
-                .roles("ADMIN")
-                .build();
-
-        return new InMemoryUserDetailsManager(ramesh, admin);
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, UserDetailsService userDetailsService) throws Exception {
+        http.csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests((authorize) -> {
+                    authorize.requestMatchers("/", "/login").permitAll()
+                            .requestMatchers("/authorized").authenticated()
+                            .anyRequest().authenticated();
+                })
+                .formLogin(form -> form
+                        .defaultSuccessUrl("/authorized", true)
+                )
+                .logout(logout -> logout.logoutUrl("/logout")
+                        .logoutSuccessUrl("/"));
+        return http.build();
     }
 }
