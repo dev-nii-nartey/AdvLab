@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>User Message - XSS Protection Demo</title>
+</head>
+<body>
+<h1>XSS Protection Demo</h1>
+<h2>Your input:</h2>
+<pre th:text="${originalMessage}"></pre>
+
+<h2>Encoded output (safe to render):</h2>
+<p th:utext="${encodedMessage}"></p>
+
+<a href="/authorized">Back to Authorized Page</a>
+</body>
+</html>

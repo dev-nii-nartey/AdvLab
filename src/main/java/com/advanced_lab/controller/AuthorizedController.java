@@ -1,12 +1,12 @@
 package com.advanced_lab.controller;
 
+import com.advanced_lab.security.XssUtils;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-
-import java.util.Collection;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class AuthorizedController {
@@ -27,5 +27,13 @@ public class AuthorizedController {
         } else {
             return "redirect:/authorized?error";
         }
+    }
+
+    @PostMapping("/authorized/userMessage")
+    public String userMessage(@RequestParam String userInput, Model model) {
+        String encodedMessage = XssUtils.encodeHtml(userInput);
+        model.addAttribute("originalMessage", userInput);
+        model.addAttribute("encodedMessage", encodedMessage);
+        return "user-message";
     }
 }

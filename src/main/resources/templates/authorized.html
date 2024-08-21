@@ -10,6 +10,13 @@
     <input type="submit" value="Logout"/>
 </form>
 
+<h2>XSS Protection Demo</h2>
+<form th:action="@{/authorized/userMessage}" method="post">
+    <label for="userInput">Enter a message (try including HTML or script tags):</label><br>
+    <textarea id="userInput" name="userInput" rows="4" cols="50"></textarea><br>
+    <input type="submit" value="Submit Message">
+</form>
+
 <script th:inline="javascript">
     function showAuthorizedPage() {
         if ([[${isAdmin}]]) {

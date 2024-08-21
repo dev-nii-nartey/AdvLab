@@ -29,6 +29,29 @@ This Spring Boot application demonstrates basic authentication and authorization
     - Client-side: JavaScript checks the user's role before attempting to access the admin area
     - Server-side: The `/authorized/admin` endpoint verifies the user's role again, ensuring that only users with the ADMIN role can access it
 
+
+## XSS Mitigation
+
+This application demonstrates XSS (Cross-Site Scripting) mitigation techniques:
+
+- A custom `XssUtils` class is used to encode user input before displaying it on the page.
+- The `/authorized/userMessage` endpoint demonstrates how to safely display user-submitted content:
+    1. User input is received via a form on the authorized page.
+    2. The input is encoded using `XssUtils.encodeHtml()` method, which internally uses Spring's `HtmlUtils.htmlEscape()`.
+    3. The encoded message is then displayed on the `user-message.html` page using Thymeleaf's `th:utext` attribute, which does not escape HTML entities.
+
+This approach ensures that any potentially malicious scripts in the user input are rendered as plain text, preventing XSS attacks.
+
+### Testing XSS Protection
+
+To test the XSS protection:
+
+1. Log in to the application.
+2. On the authorized page, submit a message containing HTML or JavaScript, e.g., `<script>alert('XSS')</script>`.
+3. Observe that the message is displayed as plain text on the user message page, rather than being executed as HTML or JavaScript.
+
+This demonstrates that the application is protected against reflected XSS attacks.
+
 ### CSRF Protection
 
 - CSRF protection is disabled for demonstration purposes. In a production environment, CSRF protection should be enabled and properly configured.
