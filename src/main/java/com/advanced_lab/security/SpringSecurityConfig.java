@@ -48,18 +48,21 @@ public class SpringSecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http, UserDetailsService userDetailsService) throws Exception {
-        http.csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests((authorize) -> {
-                    authorize.requestMatchers("/", "/login").permitAll()
-                            .requestMatchers("/authorized").authenticated()
-                            .anyRequest().authenticated();
-                })
-                .formLogin(form -> form
-                        .defaultSuccessUrl("/authorized", true)
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/").permitAll()
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .anyRequest().authenticated()
                 )
-                .logout(logout -> logout.logoutUrl("/logout")
-                        .logoutSuccessUrl("/"));
+                .formLogin(form -> form
+                        .successHandler(new CustomAuthenticationSuccessHandler())
+                )
+                .logout(logout -> logout
+                        .logoutSuccessUrl("/")
+                );
+
         return http.build();
     }
 }

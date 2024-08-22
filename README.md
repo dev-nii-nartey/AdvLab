@@ -12,6 +12,7 @@ This Spring Boot application demonstrates Spring Boot Security Core Concepts usi
 - Admin-only area with additional access control
 - Input and output Encoding
 - Logout functionality
+- Role-based redirection after login
 
 ## Security Measures
 
@@ -24,21 +25,23 @@ This Spring Boot application demonstrates Spring Boot Security Core Concepts usi
 ### Authorization
 
 - Role-based access control (RBAC) is implemented
-- The `/authorized` endpoint is accessible to all authenticated users
-- The "Authorized Button" on the `/authorized` page implements client-side and server-side role checks:
+- The /authorized endpoint is accessible to all authenticated users
+- The "Authorized Button" on the /authorized page implements client-side and server-side role checks:
     - Client-side: JavaScript checks the user's role before attempting to access the admin area
-    - Server-side: The `/authorized/admin` endpoint verifies the user's role again, ensuring that only users with the ADMIN role can access it
-
+    - Server-side: The /authorized/admin endpoint verifies the user's role again, ensuring that only users with the ADMIN role can access it
+- After successful login, users are redirected based on their role:
+    - Users with ADMIN role are directed to the "Welcome Admin" page
+    - Users with USER role are directed to the "Welcome User" page
 
 ## XSS Mitigation
 
 This application demonstrates XSS (Cross-Site Scripting) mitigation techniques:
 
-- A custom `XssUtils` class is used to encode user input before displaying it on the page.
-- The `/authorized/userMessage` endpoint demonstrates how to safely display user-submitted content:
+- A custom XssUtils class is used to encode user input before displaying it on the page.
+- The /authorized/userMessage endpoint demonstrates how to safely display user-submitted content:
     1. User input is received via a form on the authorized page.
-    2. The input is encoded using `XssUtils.encodeHtml()` method, which internally uses Spring's `HtmlUtils.htmlEscape()`.
-    3. The encoded message is then displayed on the `user-message.html` page using Thymeleaf's `th:utext` attribute, which does not escape HTML entities.
+    2. The input is encoded using XssUtils.encodeHtml() method, which internally uses Spring's HtmlUtils.htmlEscape().
+    3. The encoded message is then displayed on the user-message.html page using Thymeleaf's th:utext attribute, which does not escape HTML entities.
 
 This approach ensures that any potentially malicious scripts in the user input are rendered as plain text, preventing XSS attacks.
 
@@ -47,7 +50,7 @@ This approach ensures that any potentially malicious scripts in the user input a
 To test the XSS protection:
 
 1. Log in to the application.
-2. On the authorized page, submit a message containing HTML or JavaScript, e.g., `<script>alert('XSS')</script>`.
+2. On the authorized page, submit a message containing HTML or JavaScript, e.g., <script>alert('XSS')</script>.
 3. Observe that the message is displayed as plain text on the user message page, rather than being executed as HTML or JavaScript.
 
 This demonstrates that the application is protected against reflected XSS attacks.
@@ -65,17 +68,20 @@ This demonstrates that the application is protected against reflected XSS attack
 1. Ensure you have Java and Maven installed on your system.
 2. Clone this repository.
 3. Navigate to the project directory.
-4. Run the application using: `mvn spring-boot:run`
-5. Access the application at: `http://localhost:8080`
+4. Run the application using: mvn spring-boot:run
+5. Access the application at: http://localhost:8080/login
 
 ## Usage
 
-1. Access the login page at `/login` or by trying to access `/authorized`
+1. Access the login page at /login or by trying to access /authorized
 2. Log in using one of the following credentials:
-    - Regular user: username `nat`, password `pass`
-    - Admin user: username `nii`, password `password`
-3. After logging in, you'll be redirected to the `/authorized` page
-4. Click the "Authorized Button":
+    - Regular user: username nat, password: pass
+    - Admin user: username nii, password: password
+3. After logging in, you'll be redirected based on your role:
+    - Admin users will see the "Welcome Admin" page
+    - Regular users will see the "Welcome User" page
+4. Both pages have a link to the /authorized page
+5. On the /authorized page, click the "Authorized Button":
     - If logged in as a regular user, you'll see an alert stating you're not authorized
     - If logged in as an admin, you'll be taken to the admin-only page
 
@@ -85,9 +91,7 @@ This demonstrates that the application is protected against reflected XSS attack
 - Add user registration functionality
 - Enable and properly configure CSRF protection
 - Implement more granular role-based access control
-- Add logging to tackle potential Data
-  Repudiation by Web
-  Service and auditing of security events 
+- Add logging to tackle potential Data Repudiation by Web Service and auditing of security events
 - Implement secure password reset functionality
 
 ## Contributing
