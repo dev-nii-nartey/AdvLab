@@ -36,4 +36,17 @@ public class AuthorizedController {
         model.addAttribute("encodedMessage", encodedMessage);
         return "user-message";
     }
+
+
+    @GetMapping("/user/welcome")
+    public String userWelcome(Model model) {
+        model.addAttribute("message", "Welcome! You are a Customer");
+        return "user-welcome";
+    }
+
+    @GetMapping("/admin/welcome")
+    public String adminWelcome(Model model) {
+        model.addAttribute("message", "Welcome! You are an Admin");
+        return "admin-welcome";
+    }
 }
