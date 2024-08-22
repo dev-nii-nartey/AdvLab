@@ -2,7 +2,7 @@
 
 ## Overview
 
-This Spring Boot application demonstrates basic authentication and authorization features using Spring Security. It includes a secured page with role-based access control and a protected admin-only area.
+This Spring Boot application demonstrates Spring Boot Security Core Concepts using basic authentication and authorization features. It includes a secured page with role-based access control and a protected admin-only area.
 
 ## Features
 
