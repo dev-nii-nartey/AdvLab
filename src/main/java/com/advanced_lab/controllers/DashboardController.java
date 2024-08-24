@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class DashboardController {
     @GetMapping("/login")
     public String login() {
-        return "admin-welcome";  // This assumes you have a login.html in your templates directory
+        return "admin-welcome";
     }
 
 }

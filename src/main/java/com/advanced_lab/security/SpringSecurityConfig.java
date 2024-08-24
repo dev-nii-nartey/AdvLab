@@ -50,45 +50,15 @@ public class SpringSecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-
-//    @Bean
-//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        http.csrf(csrf -> csrf.disable())
-//                .authorizeHttpRequests((authorize) -> {
-//                    authorize.requestMatchers("/api/user").hasRole("ADMIN");
-//                    authorize.requestMatchers("/api/auth/**").permitAll();
-//                    authorize.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
-//                    authorize.anyRequest().authenticated();
-//                })
-//                .formLogin(form -> form
-//                        .loginProcessingUrl("/api/auth/login")
-//                        .successHandler((request, response, authentication) -> {
-//                            // Handle successful authentication
-//                            // You might want to generate a JWT here and return it
-//                        })
-//                        .failureHandler((request, response, exception) -> {
-//                            // Handle authentication failure
-//                        })
-//                        .permitAll()
-//                )
-//                .httpBasic(Customizer.withDefaults())
-//                .exceptionHandling(exception -> exception.authenticationEntryPoint(authenticationEntryPoint))
-//                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-//                .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
-//                .cors(cors -> cors.configurationSource(corsConfigurationSource()));
-//
-//        return http.build();
-//    }
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/user").hasRole("ADMIN")
+                        .requestMatchers("/api/user").hasAuthority("ADMIN")
                         .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/login").permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .requestMatchers("/").permitAll()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults())

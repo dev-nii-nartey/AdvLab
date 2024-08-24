@@ -25,7 +25,6 @@ public class AuthController {
 
     private AuthService authService;
 
-//Build Register REST API
     @PostMapping("/signup")
     public ResponseEntity<?> signup( @Valid @RequestBody DtoUser body){
        DtoUser newUser = authService.register(body);
@@ -35,7 +34,6 @@ public class AuthController {
 
 
 
-    // Build Login REST API
     @PostMapping("/login")
     public ResponseEntity<JwtAuthResponse> login(@Valid @RequestBody LoginDto loginDto){
         String token = authService.login(loginDto);

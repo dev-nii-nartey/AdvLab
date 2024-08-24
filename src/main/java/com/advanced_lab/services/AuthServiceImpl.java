@@ -12,6 +12,7 @@ import com.advanced_lab.repositories.RoleRepository;
 import com.advanced_lab.repositories.UserRepository;
 import com.advanced_lab.security.JwtTokenProvider;
 import com.advanced_lab.utils.AppUtils;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -35,6 +36,7 @@ public class AuthServiceImpl implements AuthService {
 
 
     @Override
+    @Transactional
     public DtoUser register(DtoUser userObject) {
         String email = userObject.getEmail();
         String firstName = userObject.getFirstName();
@@ -50,10 +52,11 @@ public class AuthServiceImpl implements AuthService {
         return AppUtils.convertToDto(saved);
     }
 
-
+    @Transactional
     public User addRoleToUser(User user, String roleName) {
         Role role = roleRepository.findRoleByName(roleName)
                 .orElseThrow(() -> new RuntimeException("Role not found"));
+        System.out.println("roleName "+ roleName);
         user.addRole(role);
         return userRepository.save(user);
     }

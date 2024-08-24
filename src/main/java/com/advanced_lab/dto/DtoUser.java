@@ -1,31 +1,30 @@
 package com.advanced_lab.dto;
 
-
-
-import com.advanced_lab.models.Role;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
-import java.util.List;
-import java.util.Set;
-
 @Getter
 @Setter
-@NoArgsConstructor
 @RequiredArgsConstructor
 public class DtoUser {
-    @NonNull
+    @NotBlank(message = "Email is required")
     @Email(message = "Email is not valid")
-    String email;
-    Boolean enabled;
+    private String email;
+
+    private Boolean enabled;
+
     @Size(min = 3, max = 15, message = "Username must be between 3 and 15 characters")
-    @NonNull
-    String firstName;
-    @NonNull
+    @NotBlank(message = "FirstName is required")
+    private String firstName;
+
+    @NotBlank(message = "LastName is required")
     @Size(min = 3, max = 15, message = "Username must be between 3 and 15 characters")
-    String lastName;
-    @NonNull
-    String password;
-    String roles;
+    private String lastName;
+
+    @NotBlank(message = "Password is required")
+    private String password;
+
+    private String roles;
 }

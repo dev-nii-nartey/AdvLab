@@ -17,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
@@ -35,6 +36,7 @@ public class UserServiceImpl implements AppUserService, UserDetailsService {
     }
 
     @Override
+    @Transactional
     public DtoUser create(DtoUser userObject) {
         String email = userObject.getEmail();
         String firstName = userObject.getFirstName();
@@ -48,6 +50,7 @@ public class UserServiceImpl implements AppUserService, UserDetailsService {
         return AppUtils.convertToDto(saved);
     }
 
+    @Transactional
     public void addRoleToUser(User user, String roleName) {
         Role role = roleRepository.findRoleByName(roleName)
                 .orElseThrow(() -> new RuntimeException("Role not found"));
@@ -57,6 +60,7 @@ public class UserServiceImpl implements AppUserService, UserDetailsService {
 
 
     @Override
+    @Transactional
     public DtoUser update(Long id, DtoUser userObject) {
             User existingUser = userRepository.findById(id)
                     .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
@@ -71,6 +75,7 @@ public class UserServiceImpl implements AppUserService, UserDetailsService {
 
 
     @Override
+    @Transactional
     public boolean delete(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
@@ -103,18 +108,20 @@ public class UserServiceImpl implements AppUserService, UserDetailsService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail( username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not exists by Username or Email"));
+        User user = userRepository.findByEmail(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
         Set<GrantedAuthority> authorities = user.getRoles().stream()
-                .map((role) -> new SimpleGrantedAuthority(role.getName()))
+                .map(role -> new SimpleGrantedAuthority(role.getName()))
                 .collect(Collectors.toSet());
 
         return new org.springframework.security.core.userdetails.User(
-                username,
+                user.getEmail(),
                 user.getPassword(),
                 authorities
         );
     }
+
 }
