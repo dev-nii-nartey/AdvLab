@@ -7,7 +7,9 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.ModelAndView;
 
+import org.springframework.security.core.AuthenticationException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,5 +53,13 @@ public class GlobalExceptionHandler {
         ex.getBindingResult().getFieldErrors().forEach(error ->
                 errors.put(error.getField(), error.getDefaultMessage()));
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+    }
+
+//CATCHING LOGIN FAILURES
+    @ExceptionHandler(AuthenticationException.class)
+    public ModelAndView handleAuthenticationException(AuthenticationException ex) {
+        ModelAndView modelAndView = new ModelAndView("redirect:/login");
+        modelAndView.addObject("error", "Invalid username or password");
+        return modelAndView;
     }
 }

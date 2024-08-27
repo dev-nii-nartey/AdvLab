@@ -8,6 +8,8 @@ import com.advanced_lab.utils.AppUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,5 +33,11 @@ public class UserController {
 
     };
 
-
+    @GetMapping("/login-success")
+    public ResponseEntity<String> loginSuccess(@AuthenticationPrincipal OAuth2User principal) {
+        if (principal == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Authentication failed");
+        }
+        return ResponseEntity.ok("Login successful for user: " + principal.getName());
+    }
 }

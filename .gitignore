@@ -33,5 +33,6 @@ build/
 .vscode/
 
 keystore.p12
-application.properties
+application-dev*
+
 

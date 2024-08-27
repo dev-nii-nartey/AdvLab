@@ -8,6 +8,8 @@ import lombok.*;
 @Getter
 @Setter
 @RequiredArgsConstructor
+@AllArgsConstructor
+@Builder
 public class DtoUser {
     @NotBlank(message = "Email is required")
     @Email(message = "Email is not valid")
