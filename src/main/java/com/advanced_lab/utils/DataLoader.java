@@ -26,13 +26,10 @@ public class DataLoader implements CommandLineRunner {
 
     private void loadData() {
         Role adminRole = new Role("ADMIN", "Manages everything on the system");
-        Role customerRole = new Role("CUSTOMER", "Ability to purchase stuff the system");
-        Role editorRole = new Role("EDITOR", "Manages categories, brands, products, articles and menu on the system");
-        Role shipperRole = new Role("SHIPPER", "View products, view orderws and update order status on the system");
-        Role salespersonRole = new Role("SALESPERSON", "Managers product price, customers, shipping, orders and sales report on the system");
-        Role assistantRole = new Role("ASSISTANT", "Manages questions and reviews on the system");
+        Role userRole = new Role("USER", "Ability to purchase stuff the system");
 
-        roleRepository.saveAll(List.of(adminRole,customerRole,editorRole,shipperRole,assistantRole,salespersonRole));
+
+        roleRepository.saveAll(List.of(adminRole,userRole));
 
         System.out.println("Data has been loaded!");
     }
