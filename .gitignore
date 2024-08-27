@@ -34,5 +34,6 @@ build/
 
 keystore.p12
 application-dev*
+**/
 
 
