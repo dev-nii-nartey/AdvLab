@@ -9,13 +9,14 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Employee {
+public abstract class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long employeeNumber;
+    private Long id;
 
     private String surname;
     private String firstName;
     private String address;
     private String telephoneNumber;
+    private Double salary;
 }

@@ -10,10 +10,9 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
+@DiscriminatorValue("Nurse")
 public class Nurse extends Employee {
     private String rotation;
-    private Double salary;
 
     @ManyToOne
     @JoinColumn(name = "department_id")

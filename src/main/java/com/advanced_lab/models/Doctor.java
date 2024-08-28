@@ -9,7 +9,7 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
+@DiscriminatorValue("Doctor")
 public class Doctor extends Employee {
     private String specialty;
 
