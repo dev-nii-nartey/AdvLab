@@ -52,11 +52,13 @@ public class SpringSecurityConfig {
         http
                 .csrf(csrf -> csrf
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                        .ignoringRequestMatchers("/api/auth/**")  // Ignore CSRF for authentication endpoints
+                        .ignoringRequestMatchers("/api/**")  // Ignore CSRF for authentication endpoints
                 )
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/api/**").permitAll()
                         .requestMatchers("/api/user").hasAuthority("ADMIN")
                         .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/departments/**").permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/","/register").permitAll()
                         .anyRequest().authenticated()

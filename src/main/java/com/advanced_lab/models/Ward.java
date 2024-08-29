@@ -3,6 +3,8 @@ package com.advanced_lab.models;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "wards")
 @Data
