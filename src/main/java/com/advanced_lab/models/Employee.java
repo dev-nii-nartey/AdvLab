@@ -2,11 +2,13 @@ package com.advanced_lab.models;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Table(name = "employees")
 @Inheritance(strategy = InheritanceType.JOINED)
 @Data
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 public abstract class Employee {
@@ -19,4 +21,5 @@ public abstract class Employee {
     private String address;
     private String telephoneNumber;
     private Double salary;
+    private boolean isDeleted;
 }
