@@ -4,7 +4,12 @@ import com.advanced_lab.iservices.DoctorService;
 import com.advanced_lab.models.Doctor;
 import com.advanced_lab.models.Employee;
 import com.advanced_lab.repositories.DoctorRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,6 +17,7 @@ import java.util.List;
 @Service
 public class DoctorServiceImpl implements DoctorService {
 
+    private static final Logger logger = LoggerFactory.getLogger(DoctorServiceImpl.class);
     private final DoctorRepository doctorRepository;
 
     @Autowired
@@ -20,36 +26,47 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
+    @CacheEvict(value = {"doctorCache", "allDoctorsCache"}, allEntries = true)
     public Doctor createDoctor(Doctor doctor) {
+        logger.info("Creating new doctor: {}", doctor);
         return doctorRepository.save(doctor);
     }
 
     @Override
-    public Doctor getDoctorById(Long id) {
-        Employee employee = doctorRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Doctor not found with id: " + id));
+    @Cacheable(value = "doctorCache", key = "#doctorId")
+    public Doctor getDoctorById(Long doctorId) {
+        logger.info("Fetching doctor data for id: {}", doctorId);
+        Employee employee = doctorRepository.findById(doctorId)
+                .orElseThrow(() -> new RuntimeException("Doctor not found with id: " + doctorId));
 
         if (!(employee instanceof Doctor)) {
-            throw new RuntimeException("Employee with id: " + id + " is not a Doctor");
+            throw new RuntimeException("Employee with id: " + doctorId + " is not a Doctor");
         }
 
         Doctor doctor = (Doctor) employee;
 
         if (doctor.isDeleted()) {
-            throw new RuntimeException("Doctor with id: " + id + " has been deleted");
+            throw new RuntimeException("Doctor with id: " + doctorId + " has been deleted");
         }
 
         return doctor;
     }
 
     @Override
+    @Cacheable(value = "allDoctorsCache", unless = "#result.isEmpty()")
     public List<Doctor> getAllDoctors() {
+        logger.info("Fetching all non-deleted doctors");
         return doctorRepository.findAllNonDeletedDoctors();
     }
 
     @Override
-    public Doctor updateDoctor(Long id, Doctor doctor) {
-        Doctor existingDoctor = getDoctorById(id);
+    @Caching(evict = {
+            @CacheEvict(value = "doctorCache", key = "#doctorId"),
+            @CacheEvict(value = "allDoctorsCache", allEntries = true)
+    })
+    public Doctor updateDoctor(Long doctorId, Doctor doctor) {
+        logger.info("Updating doctor with id: {}", doctorId);
+        Doctor existingDoctor = getDoctorById(doctorId);
         existingDoctor.setSurname(doctor.getSurname());
         existingDoctor.setFirstName(doctor.getFirstName());
         existingDoctor.setAddress(doctor.getAddress());
@@ -61,7 +78,12 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
+    @Caching(evict = {
+            @CacheEvict(value = "doctorCache", key = "#id"),
+            @CacheEvict(value = "allDoctorsCache", allEntries = true)
+    })
     public void deleteDoctor(Long id) {
+        logger.info("Deleting doctor with id: {}", id);
         doctorRepository.deleteById(id);
     }
 }
