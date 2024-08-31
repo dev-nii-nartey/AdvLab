@@ -30,7 +30,7 @@ public class HospitalizationServiceImpl implements HospitalizationService {
     }
 
     @Override
-    public Hospitalization getHospitalizationById(Long id) {
+    public Hospitalization getHospitalizationById(String id) {
         return hospitalizationRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Hospitalization not found with id: " + id));
     }
@@ -41,7 +41,7 @@ public class HospitalizationServiceImpl implements HospitalizationService {
     }
 
     @Override
-    public Hospitalization updateHospitalization(Long id, Hospitalization hospitalization) {
+    public Hospitalization updateHospitalization(String id, Hospitalization hospitalization) {
         Hospitalization existingHospitalization = getHospitalizationById(id);
         existingHospitalization.setBedNumber(hospitalization.getBedNumber());
         existingHospitalization.setDiagnosis(hospitalization.getDiagnosis());
@@ -52,23 +52,23 @@ public class HospitalizationServiceImpl implements HospitalizationService {
     }
 
     @Override
-    public void deleteHospitalization(Long id) {
+    public void deleteHospitalization(String id) {
         hospitalizationRepository.deleteById(id);
     }
 
     @Override
-    public List<Hospitalization> getHospitalizationsByPatient(Long patientId) {
+    public List<Hospitalization> getHospitalizationsByPatient(String patientId) {
         return hospitalizationRepository.findByPatientPatientNumber(patientId);
     }
 
     @Override
-    public List<Hospitalization> getHospitalizationsByWard(Long wardId) {
+    public List<Hospitalization> getHospitalizationsByWard(String wardId) {
         return hospitalizationRepository.findByWardId(wardId);
     }
 
     @Override
     @Transactional
-    public Hospitalization linkPatientToHospitalization(Long hospitalizationId, Long patientId) {
+    public Hospitalization linkPatientToHospitalization(String hospitalizationId, String patientId) {
         Hospitalization hospitalization = hospitalizationRepository.findById(hospitalizationId)
                 .orElseThrow(() -> new EntityNotFoundException("Hospitalization not found with id: " + hospitalizationId));
         Patient patient = patientRepository.findById(patientId)

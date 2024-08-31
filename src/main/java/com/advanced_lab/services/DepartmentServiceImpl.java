@@ -35,7 +35,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 
 
     @Override
-    public DepartmentDTO getDepartmentById(Long id) {
+    public DepartmentDTO getDepartmentById(String id) {
         Department foundDepartment = departmentRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Department not found" + id));
         return DepartmentDTO.builder().id(foundDepartment.getId()).code(foundDepartment.getCode()).name(foundDepartment.getName()).building(foundDepartment.getBuilding()).build();
@@ -58,7 +58,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 
 
     @Override
-    public DepartmentDTO updateDepartment(Long id, DepartmentDTO department) {
+    public DepartmentDTO updateDepartment(String id, DepartmentDTO department) {
         Department existingDepartment  = departmentRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Department not found" + id));
         existingDepartment.setCode(department.getCode());
@@ -69,14 +69,14 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public void deleteDepartment(Long id) {
+    public void deleteDepartment(String id) {
         departmentRepository.deleteById(id);
     }
 
 
     @Override
     @Transactional
-    public DepartmentDTO setDirector(Long departmentId, Long doctorId) {
+    public DepartmentDTO setDirector(String departmentId, String doctorId) {
         Department department = departmentRepository.findById(departmentId)
                 .orElseThrow(() -> new EntityNotFoundException("Department not found with id: " + departmentId));
 

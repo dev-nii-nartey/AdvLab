@@ -35,7 +35,7 @@ public class WardServiceImpl implements WardService {
     }
 
     @Override
-    public Ward getWardById(Long id) {
+    public Ward getWardById(String id) {
         return wardRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Ward not found with id: " + id));
     }
@@ -46,7 +46,7 @@ public class WardServiceImpl implements WardService {
     }
 
     @Override
-    public Ward updateWard(Long id, Ward ward) {
+    public Ward updateWard(String id, Ward ward) {
         Ward existingWard = getWardById(id);
         existingWard.setNumber(ward.getNumber());
         existingWard.setNumberOfBeds(ward.getNumberOfBeds());
@@ -56,18 +56,18 @@ public class WardServiceImpl implements WardService {
     }
 
     @Override
-    public void deleteWard(Long id) {
+    public void deleteWard(String id) {
         wardRepository.deleteById(id);
     }
 
     @Override
-    public List<Ward> getWardsByDepartment(Long departmentId) {
+    public List<Ward> getWardsByDepartment(String departmentId) {
         return wardRepository.findByDepartmentId(departmentId);
     }
 
     @Override
     @Transactional
-    public Ward setSupervisor(Long wardId, Long nurseId) {
+    public Ward setSupervisor(String wardId, String nurseId) {
         Ward ward = wardRepository.findById(wardId)
                 .orElseThrow(() -> new EntityNotFoundException("Ward not found"));
         Nurse nurse = nurseRepository.findById(nurseId)
@@ -78,18 +78,18 @@ public class WardServiceImpl implements WardService {
     }
 
     @Override
-    public Ward assignNurseToWard(Long wardId, Long nurseId) {
+    public Ward assignNurseToWard(String wardId, String nurseId) {
         return null;
     }
 
     @Override
-    public Ward assignDoctorToWard(Long wardId, Long doctorId) {
+    public Ward assignDoctorToWard(String wardId, String doctorId) {
         return null;
     }
 
 //    @Override
 //    @Transactional
-//    public Ward assignNurseToWard(Long wardId, Long nurseId) {
+//    public Ward assignNurseToWard(String wardId, String nurseId) {
 //        Ward ward = wardRepository.findById(wardId)
 //                .orElseThrow(() -> new EntityNotFoundException("Ward not found with id: " + wardId));
 //        Nurse nurse = nurseRepository.findById(nurseId)
@@ -102,7 +102,7 @@ public class WardServiceImpl implements WardService {
 //
 //    @Override
 //    @Transactional
-//    public Ward assignDoctorToWard(Long wardId, Long doctorId) {
+//    public Ward assignDoctorToWard(String wardId, String doctorId) {
 //        Ward ward = wardRepository.findById(wardId)
 //                .orElseThrow(() -> new EntityNotFoundException("Ward not found with id: " + wardId));
 //        Doctor doctor = doctorRepository.findById(doctorId)

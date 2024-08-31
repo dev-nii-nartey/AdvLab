@@ -2,7 +2,6 @@ package com.advanced_lab.services;
 
 import com.advanced_lab.iservices.DoctorService;
 import com.advanced_lab.models.Doctor;
-import com.advanced_lab.models.Employee;
 import com.advanced_lab.repositories.DoctorRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,34 +27,21 @@ public class DoctorServiceImpl implements DoctorService {
     @Override
     @CacheEvict(value = {"doctorCache", "allDoctorsCache"}, allEntries = true)
     public Doctor createDoctor(Doctor doctor) {
+        doctor.setEmployeeType("Doctor");
         return doctorRepository.save(doctor);
     }
 
     @Override
     @Cacheable(value = "doctorCache", key = "#doctorId")
-    public Doctor getDoctorById(Long doctorId) {
-        logger.info("Fetching doctor data for id: {}", doctorId);
-        Employee employee = doctorRepository.findById(doctorId)
+    public Doctor getDoctorById(String doctorId) {
+        return doctorRepository.findByIdAndEmployeeTypeAndIsDeletedFalse(doctorId, "Doctor")
                 .orElseThrow(() -> new RuntimeException("Doctor not found with id: " + doctorId));
-
-        if (!(employee instanceof Doctor)) {
-            throw new RuntimeException("Employee with id: " + doctorId + " is not a Doctor");
-        }
-
-        Doctor doctor = (Doctor) employee;
-
-        if (doctor.isDeleted()) {
-            throw new RuntimeException("Doctor with id: " + doctorId + " has been deleted");
-        }
-
-        return doctor;
     }
 
     @Override
     @Cacheable(value = "allDoctorsCache", unless = "#result.isEmpty()")
     public List<Doctor> getAllDoctors() {
-        logger.info("Fetching all non-deleted doctors");
-        return doctorRepository.findAllNonDeletedDoctors();
+        return doctorRepository.findByEmployeeTypeAndIsDeletedFalse("Doctor");
     }
 
     @Override
@@ -63,8 +49,7 @@ public class DoctorServiceImpl implements DoctorService {
             @CacheEvict(value = "doctorCache", key = "#doctorId"),
             @CacheEvict(value = "allDoctorsCache", allEntries = true)
     })
-    public Doctor updateDoctor(Long doctorId, Doctor doctor) {
-        logger.info("Updating doctor with id: {}", doctorId);
+    public Doctor updateDoctor(String doctorId, Doctor doctor) {
         Doctor existingDoctor = getDoctorById(doctorId);
         existingDoctor.setSurname(doctor.getSurname());
         existingDoctor.setFirstName(doctor.getFirstName());
@@ -81,8 +66,9 @@ public class DoctorServiceImpl implements DoctorService {
             @CacheEvict(value = "doctorCache", key = "#id"),
             @CacheEvict(value = "allDoctorsCache", allEntries = true)
     })
-    public void deleteDoctor(Long id) {
-        logger.info("Deleting doctor with id: {}", id);
-        doctorRepository.deleteById(id);
+    public void deleteDoctor(String id) {
+        Doctor doctor = getDoctorById(id);
+        doctor.setDeleted(true);
+        doctorRepository.save(doctor);
     }
 }

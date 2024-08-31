@@ -24,7 +24,7 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public Patient getPatientById(Long id) {
+    public Patient getPatientById(String id) {
         return patientRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Patient not found with id: " + id));
     }
@@ -35,7 +35,7 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public Patient updatePatient(Long id, Patient patient) {
+    public Patient updatePatient(String id, Patient patient) {
         Patient existingPatient = getPatientById(id);
         existingPatient.setName(patient.getName());
         existingPatient.setSurname(patient.getSurname());
@@ -45,7 +45,7 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public void deletePatient(Long id) {
+    public void deletePatient(String id) {
         patientRepository.deleteById(id);
     }
 }
