@@ -28,7 +28,6 @@ public class DoctorServiceImpl implements DoctorService {
     @Override
     @CacheEvict(value = {"doctorCache", "allDoctorsCache"}, allEntries = true)
     public Doctor createDoctor(Doctor doctor) {
-        logger.info("Creating new doctor: {}", doctor);
         return doctorRepository.save(doctor);
     }
 
