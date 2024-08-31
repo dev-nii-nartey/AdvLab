@@ -2,24 +2,24 @@ package com.advanced_lab.models;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
-@Entity
-@Table(name = "patients")
+@Document(value = "patients")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Patient {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long patientNumber;
+    private String patientNumber;
 
     private String name;
     private String surname;
     private String address;
     private String telephoneNumber;
 
-    @OneToMany(mappedBy = "patient")
+    @DBRef(lazy = true)
     private List<Hospitalization> hospitalizations;
 }

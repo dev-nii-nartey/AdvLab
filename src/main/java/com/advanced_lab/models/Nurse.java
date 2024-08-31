@@ -5,21 +5,23 @@ import com.advanced_lab.models.Employee;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity
-@Table(name = "nurses")
+@Document(value = "nurses")
 @Data
 @SuperBuilder
-@NoArgsConstructor
 @AllArgsConstructor
-@DiscriminatorValue("Nurse")
 public class Nurse extends Employee {
     private String rotation;
 
-    @ManyToOne
-    @JoinColumn(name = "department_id")
+    @DBRef(lazy = true)
     private Department department;
 
-    @OneToOne(mappedBy = "supervisor")
+    @DBRef(lazy = true)
     private Ward supervisedWard;
+
+    public Nurse() {
+        super.setEmployeeType("Nurse");
+    }
 }

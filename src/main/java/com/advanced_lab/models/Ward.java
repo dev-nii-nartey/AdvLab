@@ -2,30 +2,28 @@ package com.advanced_lab.models;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
-@Entity
-@Table(name = "wards")
+@Document(value= "wards")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Ward {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     private Integer number;
     private Integer numberOfBeds;
 
-    @ManyToOne
-    @JoinColumn(name = "department_id")
+    @DBRef(lazy = true)
     private Department department;
 
-    @OneToOne
-    @JoinColumn(name = "supervisor_id")
+    @DBRef(lazy = true)
     private Nurse supervisor;
 
-    @OneToMany(mappedBy = "ward")
+    @DBRef(lazy = true)
     private List<Hospitalization> hospitalizations;
 }

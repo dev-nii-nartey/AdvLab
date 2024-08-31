@@ -3,18 +3,16 @@ package com.advanced_lab.models;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity
-@Table(name = "employees")
-@Inheritance(strategy = InheritanceType.JOINED)
+@Document(collection = "employees")
 @Data
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 public abstract class Employee {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     private String surname;
     private String firstName;
@@ -22,4 +20,6 @@ public abstract class Employee {
     private String telephoneNumber;
     private Double salary;
     private boolean isDeleted;
+    private String employeeType;  // To differentiate between Doctor and Nurse
+
 }
