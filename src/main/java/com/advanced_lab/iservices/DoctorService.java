@@ -5,8 +5,8 @@ import java.util.List;
 
 public interface DoctorService {
     Doctor createDoctor(Doctor doctor);
-    Doctor getDoctorById(Long id);
+    Doctor getDoctorById(String id);
     List<Doctor> getAllDoctors();
-    Doctor updateDoctor(Long id, Doctor doctor);
-    void deleteDoctor(Long id);
+    Doctor updateDoctor(String id, Doctor doctor);
+    void deleteDoctor(String id);
 }

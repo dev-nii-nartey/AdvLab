@@ -5,12 +5,12 @@ import java.util.List;
 
 public interface HospitalizationService {
     Hospitalization createHospitalization(Hospitalization hospitalization);
-    Hospitalization getHospitalizationById(Long id);
+    Hospitalization getHospitalizationById(String id);
     List<Hospitalization> getAllHospitalizations();
-    Hospitalization updateHospitalization(Long id, Hospitalization hospitalization);
-    void deleteHospitalization(Long id);
-    List<Hospitalization> getHospitalizationsByPatient(Long patientId);
-    List<Hospitalization> getHospitalizationsByWard(Long wardId);
-    Hospitalization linkPatientToHospitalization(Long hospitalizationId, Long patientId);
+    Hospitalization updateHospitalization(String id, Hospitalization hospitalization);
+    void deleteHospitalization(String id);
+    List<Hospitalization> getHospitalizationsByPatient(String patientId);
+    List<Hospitalization> getHospitalizationsByWard(String wardId);
+    Hospitalization linkPatientToHospitalization(String hospitalizationId, String patientId);
 
 }

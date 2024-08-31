@@ -5,13 +5,13 @@ import java.util.List;
 
 public interface WardService {
     Ward createWard(Ward ward);
-    Ward getWardById(Long id);
+    Ward getWardById(String id);
     List<Ward> getAllWards();
-    Ward updateWard(Long id, Ward ward);
-    void deleteWard(Long id);
-    List<Ward> getWardsByDepartment(Long departmentId);
-    Ward setSupervisor(Long wardId, Long nurseId);
-    Ward assignNurseToWard(Long wardId, Long nurseId);
+    Ward updateWard(String id, Ward ward);
+    void deleteWard(String id);
+    List<Ward> getWardsByDepartment(String departmentId);
+    Ward setSupervisor(String wardId, String nurseId);
+    Ward assignNurseToWard(String wardId, String nurseId);
 
-    Ward assignDoctorToWard(Long wardId, Long doctorId);
+    Ward assignDoctorToWard(String wardId, String doctorId);
 }

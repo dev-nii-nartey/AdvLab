@@ -5,9 +5,9 @@ import java.util.List;
 
 public interface DepartmentService {
     DepartmentDTO createDepartment(DepartmentDTO department);
-    DepartmentDTO getDepartmentById(Long id);
+    DepartmentDTO getDepartmentById(String id);
     List<DepartmentDTO> getAllDepartments();
-    DepartmentDTO setDirector(Long departmentId, Long doctorId);
-    DepartmentDTO updateDepartment(Long id, DepartmentDTO department);
-    void deleteDepartment(Long id);
+    DepartmentDTO setDirector(String departmentId, String doctorId);
+    DepartmentDTO updateDepartment(String id, DepartmentDTO department);
+    void deleteDepartment(String id);
 }
