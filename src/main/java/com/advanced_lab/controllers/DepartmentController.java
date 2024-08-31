@@ -27,7 +27,7 @@ public class DepartmentController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<DepartmentDTO> getDepartmentById(@PathVariable Long id) {
+    public ResponseEntity<DepartmentDTO> getDepartmentById(@PathVariable String id) {
         DepartmentDTO department = departmentService.getDepartmentById(id);
         return ResponseEntity.ok(department);
     }
@@ -39,19 +39,19 @@ public class DepartmentController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<DepartmentDTO> updateDepartment(@PathVariable Long id, @RequestBody DepartmentDTO department) {
+    public ResponseEntity<DepartmentDTO> updateDepartment(@PathVariable String id, @RequestBody DepartmentDTO department) {
         DepartmentDTO updatedDepartment = departmentService.updateDepartment(id, department);
         return ResponseEntity.ok(updatedDepartment);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteDepartment(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteDepartment(@PathVariable String id) {
         departmentService.deleteDepartment(id);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{departmentId}/director/{doctorId}")
-    public ResponseEntity<DepartmentDTO> setDepartmentDirector(@PathVariable Long departmentId, @PathVariable Long doctorId) {
+    public ResponseEntity<DepartmentDTO> setDepartmentDirector(@PathVariable String departmentId, @PathVariable String doctorId) {
         DepartmentDTO updatedDepartment = departmentService.setDirector(departmentId, doctorId);
         return ResponseEntity.ok(updatedDepartment);
     }

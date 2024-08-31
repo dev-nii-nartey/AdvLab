@@ -27,7 +27,7 @@ public class NurseController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Nurse> getNurseById(@PathVariable Long id) {
+    public ResponseEntity<Nurse> getNurseById(@PathVariable String id) {
         Nurse nurse = nurseService.getNurseById(id);
         return ResponseEntity.ok(nurse);
     }
@@ -39,13 +39,13 @@ public class NurseController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Nurse> updateNurse(@PathVariable Long id, @RequestBody Nurse nurse) {
+    public ResponseEntity<Nurse> updateNurse(@PathVariable String id, @RequestBody Nurse nurse) {
         Nurse updatedNurse = nurseService.updateNurse(id, nurse);
         return ResponseEntity.ok(updatedNurse);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteNurse(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteNurse(@PathVariable String id) {
         nurseService.deleteNurse(id);
         return ResponseEntity.noContent().build();
     }

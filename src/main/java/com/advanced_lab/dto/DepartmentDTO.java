@@ -12,7 +12,7 @@ import java.util.List;
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class DepartmentDTO {
-    private Long id;
+    private String id;
     private String code;
     private String name;
     private String building;

@@ -28,7 +28,7 @@ public class HospitalizationController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Hospitalization> getHospitalizationById(@PathVariable Long id) {
+    public ResponseEntity<Hospitalization> getHospitalizationById(@PathVariable String id) {
         Hospitalization hospitalization = hospitalizationService.getHospitalizationById(id);
         return ResponseEntity.ok(hospitalization);
     }
@@ -40,31 +40,31 @@ public class HospitalizationController {
     }
 
     @GetMapping("/patient/{patientId}")
-    public ResponseEntity<List<Hospitalization>> getHospitalizationsByPatient(@PathVariable Long patientId) {
+    public ResponseEntity<List<Hospitalization>> getHospitalizationsByPatient(@PathVariable String patientId) {
         List<Hospitalization> hospitalizations = hospitalizationService.getHospitalizationsByPatient(patientId);
         return ResponseEntity.ok(hospitalizations);
     }
 
     @GetMapping("/ward/{wardId}")
-    public ResponseEntity<List<Hospitalization>> getHospitalizationsByWard(@PathVariable Long wardId) {
+    public ResponseEntity<List<Hospitalization>> getHospitalizationsByWard(@PathVariable String wardId) {
         List<Hospitalization> hospitalizations = hospitalizationService.getHospitalizationsByWard(wardId);
         return ResponseEntity.ok(hospitalizations);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Hospitalization> updateHospitalization(@PathVariable Long id, @RequestBody Hospitalization hospitalization) {
+    public ResponseEntity<Hospitalization> updateHospitalization(@PathVariable String id, @RequestBody Hospitalization hospitalization) {
         Hospitalization updatedHospitalization = hospitalizationService.updateHospitalization(id, hospitalization);
         return ResponseEntity.ok(updatedHospitalization);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteHospitalization(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteHospitalization(@PathVariable String id) {
         hospitalizationService.deleteHospitalization(id);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{hospitalizationId}/patient/{patientId}")
-    public ResponseEntity<Hospitalization> linkPatientToHospitalization(@PathVariable Long hospitalizationId, @PathVariable Long patientId) {
+    public ResponseEntity<Hospitalization> linkPatientToHospitalization(@PathVariable String hospitalizationId, @PathVariable String patientId) {
         try {
             Hospitalization updatedHospitalization = hospitalizationService.linkPatientToHospitalization(hospitalizationId, patientId);
             return ResponseEntity.ok(updatedHospitalization);
