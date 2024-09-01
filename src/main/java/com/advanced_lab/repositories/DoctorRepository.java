@@ -13,4 +13,7 @@ public interface DoctorRepository extends MongoRepository<Doctor, String> {
     Optional<Doctor> findByIdAndEmployeeTypeAndIsDeletedFalse(String id, String employeeType);
 
     List<Doctor> findByEmployeeTypeAndIsDeletedFalse(String employeeType);
+
+    Optional<Doctor> findBySurnameAndSpecialtyAndTelephoneNumberAndIsDeletedFalse(
+            String surname, String speciality, String telephoneNumber);
 }

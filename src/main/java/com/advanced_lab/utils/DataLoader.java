@@ -3,6 +3,7 @@ package com.advanced_lab.utils;
 
 import com.advanced_lab.models.Role;
 import com.advanced_lab.repositories.RoleRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
+@Slf4j
 public class DataLoader implements CommandLineRunner {
 
     private final RoleRepository roleRepository;
@@ -31,6 +33,6 @@ public class DataLoader implements CommandLineRunner {
 
         roleRepository.saveAll(List.of(adminRole,userRole));
 
-        System.out.println("Data has been loaded!");
+        log.info("Data has been loaded!, Application is UP!!");
     }
 }

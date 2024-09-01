@@ -1,5 +1,7 @@
 package com.advanced_lab.services;
 
+import com.advanced_lab.exceptions.DoctorAlreadyExistsException;
+import com.advanced_lab.exceptions.DoctorDoesNotExistException;
 import com.advanced_lab.iservices.DoctorService;
 import com.advanced_lab.models.Doctor;
 import com.advanced_lab.repositories.DoctorRepository;
@@ -12,6 +14,7 @@ import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DoctorServiceImpl implements DoctorService {
@@ -24,9 +27,18 @@ public class DoctorServiceImpl implements DoctorService {
         this.doctorRepository = doctorRepository;
     }
 
+
     @Override
     @CacheEvict(value = {"doctorCache", "allDoctorsCache"}, allEntries = true)
-    public Doctor createDoctor(Doctor doctor) {
+    public Doctor createDoctor(Doctor doctor) throws DoctorAlreadyExistsException {
+        // Check if doctor already exists
+        Optional<Doctor> existingDoctor = doctorRepository.findBySurnameAndSpecialtyAndTelephoneNumberAndIsDeletedFalse(
+                doctor.getSurname(), doctor.getSpecialty(), doctor.getTelephoneNumber());
+
+        if (existingDoctor.isPresent()) {
+            throw new DoctorAlreadyExistsException("A doctor with the same surname, specialty, and telephone number already exists.");
+        }
+
         doctor.setEmployeeType("Doctor");
         return doctorRepository.save(doctor);
     }
@@ -35,7 +47,7 @@ public class DoctorServiceImpl implements DoctorService {
     @Cacheable(value = "doctorCache", key = "#doctorId")
     public Doctor getDoctorById(String doctorId) {
         return doctorRepository.findByIdAndEmployeeTypeAndIsDeletedFalse(doctorId, "Doctor")
-                .orElseThrow(() -> new RuntimeException("Doctor not found with id: " + doctorId));
+                .orElseThrow(() -> new DoctorDoesNotExistException("Doctor not found with Id: " + doctorId));
     }
 
     @Override
@@ -51,6 +63,7 @@ public class DoctorServiceImpl implements DoctorService {
     })
     public Doctor updateDoctor(String doctorId, Doctor doctor) {
         Doctor existingDoctor = getDoctorById(doctorId);
+
         existingDoctor.setSurname(doctor.getSurname());
         existingDoctor.setFirstName(doctor.getFirstName());
         existingDoctor.setAddress(doctor.getAddress());
