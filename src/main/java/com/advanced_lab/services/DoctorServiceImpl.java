@@ -31,7 +31,6 @@ public class DoctorServiceImpl implements DoctorService {
     @Override
     @CacheEvict(value = {"doctorCache", "allDoctorsCache"}, allEntries = true)
     public Doctor createDoctor(Doctor doctor) throws DoctorAlreadyExistsException {
-        // Check if doctor already exists
         Optional<Doctor> existingDoctor = doctorRepository.findBySurnameAndSpecialtyAndTelephoneNumberAndIsDeletedFalse(
                 doctor.getSurname(), doctor.getSpecialty(), doctor.getTelephoneNumber());
 
@@ -53,6 +52,7 @@ public class DoctorServiceImpl implements DoctorService {
     @Override
     @Cacheable(value = "allDoctorsCache", unless = "#result.isEmpty()")
     public List<Doctor> getAllDoctors() {
+        logger.info("Getting all doctors");
         return doctorRepository.findByEmployeeTypeAndIsDeletedFalse("Doctor");
     }
 

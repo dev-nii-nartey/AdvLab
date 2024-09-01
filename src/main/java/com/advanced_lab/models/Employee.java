@@ -20,6 +20,6 @@ public abstract class Employee {
     private String telephoneNumber;
     private Double salary;
     private boolean isDeleted;
-    private String employeeType;  // To differentiate between Doctor and Nurse
+    private String employeeType;
 
 }
