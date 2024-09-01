@@ -1,5 +1,6 @@
 package com.advanced_lab.exceptions;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -62,4 +63,16 @@ public class GlobalExceptionHandler {
         modelAndView.addObject("error", "Invalid username or password");
         return modelAndView;
     }
+
+
+    @ExceptionHandler(DoctorAlreadyExistsException.class)
+    public ResponseEntity<String> handleDoctorAlreadyExistsException(DoctorAlreadyExistsException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(DoctorDoesNotExistException.class)
+    public ResponseEntity<String> handleDoctorDoesNotExistException(DoctorDoesNotExistException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
 }
