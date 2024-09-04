@@ -1,80 +1,71 @@
-# Secure Spring Boot Web Application
+# Java Threading and Thread Pool Demo
+
+This project demonstrates basic concepts of threading and thread pools in Java, suitable for beginners learning about concurrent programming.
 
 ## Overview
 
-This Spring Boot application demonstrates advanced Spring Boot Security concepts, implementing JWT (JSON Web Token) authentication, role-based authorization, and various security features. It's designed as a RESTful API with enhanced security measures.
+The demo includes examples of:
+1. Thread creation
+2. Thread management
+3. Basic synchronization
+4. Using a thread pool
 
-## Features
+The scenario simulates a simple task of counting numbers, which is divided among multiple threads to demonstrate concurrent execution.
 
-- JWT-based authentication
-- Role-based authorization (USER and ADMIN roles)
-- Stateless session management
-- CORS (Cross-Origin Resource Sharing) configuration
-- Rate limiting
-- HTTPS redirection
+## Code Structure
 
-## Security Measures
+The main components of this demo are:
 
-### Authentication
+- `CounterTask`: A Runnable that counts numbers within a given range.
+- `Main`: The main class that orchestrates the threading demonstrations.
 
-- Uses JWT for stateless authentication
-- Passwords are encoded using BCryptPasswordEncoder
-- Custom JwtAuthenticationFilter for processing JWT tokens
+## Features Demonstrated
 
-### Authorization
+### 1. Thread Creation and Management
 
-- Role-based access control (RBAC) is implemented
-- The /api/user endpoint is accessible only to users with ADMIN role
-- The /api/auth/** endpoints are publicly accessible
-- All other endpoints require authentication
+- Creating threads using both [Thread](https://docs.oracle.com/javase/7/docs/api/java/lang/Thread.html) class and [Runnable](https://docs.oracle.com/javase/7/docs/api/java/lang/Runnable.html) interface.
+- Starting and joining threads.
 
-### CORS Configuration
+### 2. Synchronization
 
-- Configured to allow specific origins, methods, and headers
-- Supports credentials and exposes custom headers
+- Using synchronized methods to ensure thread-safe operations on shared resources.
 
-### Rate Limiting
+### 3. Thread Pool
 
-- Implements a custom RateLimitFilter to prevent abuse of the API
+- Utilizing [ExecutorService](https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/ExecutorService.html) to manage a pool of worker threads.
+- Submitting tasks to the thread pool and shutting it down properly.
 
-### HTTPS Redirection
+## How to Run
 
-- Configures the embedded Tomcat server to redirect HTTP requests to HTTPS
-- Uses port 8443 for HTTPS and redirects from port 8080
+1. Ensure you have Java Development Kit (JDK) installed on your system.
+2. Clone this repository to your local machine.
+3. Navigate to the project directory in your terminal.
+4. Compile the Java files:
+5. Run the main class:
 
-## Setup and Running
 
-1. Ensure you have Java and Maven installed on your system.
-2. Clone this repository.
-3. Navigate to the project directory.
-4. Run the application using: `mvn spring-boot:run`
-5. The API will be accessible at: `https://localhost:8443`
+## Expected Output
 
-## API Endpoints
+The program will display the results of counting operations performed by different threads and the thread pool. You'll see output demonstrating:
 
-- POST `/api/auth/login`: Authenticate and receive a JWT
-- GET `/api/user`: Access user data (requires ADMIN role)
-- Other endpoints as implemented in your controllers
+- Individual threads counting numbers
+- Synchronized counting across threads
+- Thread pool executing multiple counting tasks
 
-## Security Configuration
+## Learning Objectives
 
-- CSRF protection is disabled for this API-based application
-- Session management is set to STATELESS
-- JWT authentication filter is added to the filter chain
-- CORS is configured to allow specific origins and methods
+This demo is designed to help beginners understand:
 
-## Future Improvements
+- How to create and manage threads in Java
+- The basics of thread synchronization
+- The concept and usage of thread pools
 
-- Implement refresh token mechanism
-- Add more granular role-based access control
-- Implement API documentation (e.g., using Swagger)
-- Add comprehensive logging and auditing
-- Implement secure password reset functionality
+Feel free to experiment with the code, adjust the number of threads or the counting ranges to see how it affects the execution.
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+Contributions to improve or expand this demo are welcome. Please feel free to submit pull requests or open issues for discussion.
 
 ## License
 
-This project is open source and available under the [MIT License](LICENSE).
+[MIT License](LICENSE)
