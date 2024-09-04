@@ -1,80 +1,50 @@
-# Secure Spring Boot Web Application
+# Java Concurrent Collections Demos
 
-## Overview
+This repository contains demonstrations of various concurrent collections in Java, showcasing their usage in multi-threaded environments.
 
-This Spring Boot application demonstrates advanced Spring Boot Security concepts, implementing JWT (JSON Web Token) authentication, role-based authorization, and various security features. It's designed as a RESTful API with enhanced security measures.
+## Demos
 
-## Features
+### 1. BlockingQueueDemo
 
-- JWT-based authentication
-- Role-based authorization (USER and ADMIN roles)
-- Stateless session management
-- CORS (Cross-Origin Resource Sharing) configuration
-- Rate limiting
-- HTTPS redirection
+Demonstrates the usage of `ArrayBlockingQueue`, an implementation of [`BlockingQueue`](https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/BlockingQueue.html).
 
-## Security Measures
+- Illustrates a producer-consumer scenario.
+- Shows how the queue automatically blocks when full (producer) or empty (consumer).
+- Highlights thread-safety and built-in flow control.
 
-### Authentication
+### 2. SimpleConcurrentHashMapDemo
 
-- Uses JWT for stateless authentication
-- Passwords are encoded using BCryptPasswordEncoder
-- Custom JwtAuthenticationFilter for processing JWT tokens
+Showcases the [`ConcurrentHashMap`](https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/ConcurrentHashMap.html) class, a thread-safe variant of `HashMap`.
 
-### Authorization
+- Demonstrates concurrent read and write operations.
+- Shows how multiple threads can safely access and modify the map simultaneously.
 
-- Role-based access control (RBAC) is implemented
-- The /api/user endpoint is accessible only to users with ADMIN role
-- The /api/auth/** endpoints are publicly accessible
-- All other endpoints require authentication
+### 3. SimpleCopyOnWriteArrayListDemo
 
-### CORS Configuration
+Illustrates the use of [`CopyOnWriteArrayList`](https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/CopyOnWriteArrayList.html), a thread-safe variant of [`ArrayList`](https://docs.oracle.com/javase/7/docs/api/java/util/ArrayList.html).
 
-- Configured to allow specific origins, methods, and headers
-- Supports credentials and exposes custom headers
+- Demonstrates how write operations create a new copy of the underlying array.
+- Shows how read operations can happen concurrently without synchronization.
 
-### Rate Limiting
+## Key Features
 
-- Implements a custom RateLimitFilter to prevent abuse of the API
+- **Thread Safety**: All demos showcase collections that are safe for use in concurrent environments.
+- **Performance**: Each collection is optimized for different use cases in multi-threaded scenarios.
+- **Ease of Use**: These collections simplify concurrent programming by handling synchronization internally.
 
-### HTTPS Redirection
+## Running the Demos
 
-- Configures the embedded Tomcat server to redirect HTTP requests to HTTPS
-- Uses port 8443 for HTTPS and redirects from port 8080
+To run each demo:
 
-## Setup and Running
+1. Compile the Java file:
+2. Run the compiled class:
 
-1. Ensure you have Java and Maven installed on your system.
-2. Clone this repository.
-3. Navigate to the project directory.
-4. Run the application using: `mvn spring-boot:run`
-5. The API will be accessible at: `https://localhost:8443`
 
-## API Endpoints
+## Notes
 
-- POST `/api/auth/login`: Authenticate and receive a JWT
-- GET `/api/user`: Access user data (requires ADMIN role)
-- Other endpoints as implemented in your controllers
+- The `BlockingQueueDemo` uses `ArrayBlockingQueue` with a capacity of 5 elements.
+- The `SimpleConcurrentHashMapDemo` shows simultaneous read and write operations on a shared map.
+- The `SimpleCopyOnWriteArrayListDemo` demonstrates how writes create a new copy while reads can occur without locking.
 
-## Security Configuration
+These demos are designed to illustrate basic concepts and are not optimized for production use.
 
-- CSRF protection is disabled for this API-based application
-- Session management is set to STATELESS
-- JWT authentication filter is added to the filter chain
-- CORS is configured to allow specific origins and methods
-
-## Future Improvements
-
-- Implement refresh token mechanism
-- Add more granular role-based access control
-- Implement API documentation (e.g., using Swagger)
-- Add comprehensive logging and auditing
-- Implement secure password reset functionality
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## License
-
-This project is open source and available under the [MIT License](LICENSE).
