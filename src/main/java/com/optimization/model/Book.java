@@ -17,3 +17,29 @@ public class Book {
     private String genre;
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//@Entity
+//@Table(indexes = @Index(name = "idx_genre", columnList = "genre"))
+//public class Book {
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
+//    private String title;
+//    private String author;
+//    private String genre;
+//
+//    // Getters and setters
+//}

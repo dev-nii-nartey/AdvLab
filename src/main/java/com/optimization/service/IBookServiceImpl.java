@@ -2,6 +2,7 @@ package com.optimization.service;
 
 import com.optimization.model.Book;
 import com.optimization.repos.BookRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,4 +30,44 @@ public class IBookServiceImpl implements IBookService {
                 .filter(book -> book.getGenre().equalsIgnoreCase(genre))
                 .collect(Collectors.toList());
     }
+
+
+    @Override
+    public Book addBook() {
+        return bookRepository.save(new Book());
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+//
+//@Service
+//public class BookService {
+//
+//    private BookRepository bookRepository;
+//@Override
+//    @Cacheable("allBooks")
+//    public List<Book> getAllBooks() {
+//        return bookRepository.findAll();
+//    }
+//@Override
+//    @Cacheable(value = "recommendations", key = "#genre")
+//    public List<Book> getRecommendations(String genre) {
+//        return bookRepository.findByGenreIgnoreCase(genre);
+//    }
+//
+//@Override
+//    @CacheEvict(value = {"allBooks", "recommendations"}, allEntries = true)
+//public Book addBook() {
+//    return bookRepository.save(new Book());
+//}
+//}
