@@ -1,6 +1,6 @@
 import java.util.concurrent.BlockingQueue;
 
- class Consumer implements Runnable {
+class Consumer implements Runnable {
     protected BlockingQueue<Object> queue;
 
     public Consumer(BlockingQueue<Object> theQueue) {

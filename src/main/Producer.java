@@ -1,6 +1,6 @@
 import java.util.concurrent.BlockingQueue;
 
- class Producer implements Runnable {
+class Producer implements Runnable {
     protected BlockingQueue<Object> queue;
 
     public Producer(BlockingQueue<Object> theQueue) {

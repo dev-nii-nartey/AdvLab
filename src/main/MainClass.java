@@ -2,7 +2,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class MainClass {
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args)  {
         int numProducers = 4;
         int numConsumers = 3;
 
@@ -17,10 +17,13 @@ public class MainClass {
         }
 
         // Let the simulation run for, say, 10 seconds
-        Thread.sleep(2 * 1000);
+        try {
+            Thread.sleep(4 * 1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
 
         // End of simulation - shut down gracefully
         System.exit(0);
     }
-
 }
