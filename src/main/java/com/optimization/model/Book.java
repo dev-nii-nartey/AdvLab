@@ -1,13 +1,12 @@
 package com.optimization.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
+import org.springframework.boot.autoconfigure.jackson.JacksonProperties;
 
 @Data
 @Entity
+@Table(indexes = @Index(name = "idx_genre", columnList = "genre"))
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
