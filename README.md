@@ -1,7 +1,7 @@
 # Book Management System
 
 This is a Spring Boot application that provides a RESTful API for managing books and book recommendations.
-I idea behind this project is to find performance bottlenecks and analyze them using tools like jprofiler or jvm, resolving the identified bottlenecks and analying again to check improvement .
+I idea behind this project is to find and analyze memory management using tools like jprofiler or jvm, resolving the identified bottlenecks and analyzing again to check improvement .
 
 ## Project Structure
 
