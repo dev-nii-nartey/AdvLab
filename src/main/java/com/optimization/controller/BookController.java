@@ -4,6 +4,8 @@ import com.optimization.model.Book;
 import com.optimization.service.IBookServiceImpl;
 import lombok.AllArgsConstructor;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,6 +17,7 @@ public class BookController {
     private IBookServiceImpl bookService;
 
     @GetMapping
+    @Cacheable("allbooks")
     public List<Book> getAllBooks() {
         return bookService.getAllBooks();
     }
@@ -26,6 +29,7 @@ public class BookController {
 
 
     @PostMapping
+    @CacheEvict("allbooks")
     public void addBook(@RequestBody Book book) {
         bookService.addBook(book);
     }
