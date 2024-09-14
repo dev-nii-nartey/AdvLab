@@ -1,15 +1,14 @@
 package com.optimization.service;
 
+import com.optimization.exception.BookAlreadyExistException;
 import com.optimization.model.Book;
 import com.optimization.repos.BookRepository;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 
 @AllArgsConstructor
@@ -20,47 +19,25 @@ public class IBookServiceImpl implements IBookService {
     private BookRepository bookRepository;
 
     @Override
-    @Cacheable("allBooks")
     public List<Book> getAllBooks() {
         return bookRepository.findAll();
     }
 
     @Override
     public List<Book> getRecommendations(String genre) {
-        List<Book> allBooks = getAllBooks();
-        return allBooks.stream()
-                .filter(book -> book.getGenre().equalsIgnoreCase(genre))
-                .collect(Collectors.toList());
+        return bookRepository.findByGenreIgnoreCase(genre);
     }
 
-
     @Override
-    public void addBook(Book book) {
+    @Transactional
+    public String addBook(Book book) {
+        Optional<Book> existingBook = bookRepository.findByTitleAndAuthor(book.getTitle(), book.getAuthor());
+        if (existingBook.isPresent()) {
+            throw new BookAlreadyExistException("A book with the title: " + book.getTitle() + " by author: " + book.getAuthor() + " already exists");
+        }
         bookRepository.save(book);
+        return book.getTitle() + " is created successfully";
     }
 }
 
 
-////*********  OPTIMIZED BOOK SERVICE   ************///
-
-//@Service
-//public class BookService {
-//
-//    private BookRepository bookRepository;
-//@Override
-//    @Cacheable("allBooks")
-//    public List<Book> getAllBooks() {
-//        return bookRepository.findAll();
-//    }
-//@Override
-//    @Cacheable(value = "recommendations", key = "#genre")
-//    public List<Book> getRecommendations(String genre) {
-//        return bookRepository.findByGenreIgnoreCase(genre);
-//    }
-//
-//@Override
-//    @CacheEvict(value = {"allBooks", "recommendations"}, allEntries = true)
-//    public void addBook(Book book) {
-//        bookRepository.save(book);
-//}
-//}

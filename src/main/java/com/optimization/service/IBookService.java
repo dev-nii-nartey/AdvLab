@@ -7,5 +7,5 @@ import java.util.List;
 public interface IBookService {
     List<Book> getAllBooks();
     List<Book> getRecommendations(String genre);
-    void addBook(Book book);
+    String addBook(Book book);
 }
