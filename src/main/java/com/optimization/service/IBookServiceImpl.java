@@ -27,10 +27,7 @@ public class IBookServiceImpl implements IBookService {
 
     @Override
     public List<Book> getRecommendations(String genre) {
-        List<Book> allBooks = getAllBooks();
-        return allBooks.stream()
-                .filter(book -> book.getGenre().equalsIgnoreCase(genre))
-                .collect(Collectors.toList());
+        return bookRepository.findByGenreIgnoreCase(genre);
     }
 
 
@@ -39,6 +36,8 @@ public class IBookServiceImpl implements IBookService {
         bookRepository.save(book);
     }
 }
+
+
 
 
 ////*********  OPTIMIZED BOOK SERVICE   ************///

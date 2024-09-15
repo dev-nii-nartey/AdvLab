@@ -54,7 +54,7 @@ public class RequestSimulator {
 
     private void simulateRequests() {
         int numOfThreads = 10;
-        int requestsPerThread = 50;
+        int requestsPerThread = 20;
 
         ExecutorService executor = Executors.newFixedThreadPool(numOfThreads);
 

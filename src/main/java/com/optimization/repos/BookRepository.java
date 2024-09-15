@@ -8,6 +8,7 @@ import java.util.List;
 
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long> {
+    List<Book> findByGenreIgnoreCase(String genre);
 }
 
 
@@ -29,8 +30,8 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
 
 
-
-//
+////////////////--------OPTIMIZED REPOSITORY--------//////////////////////
+//@Repository
 //public interface BookRepository extends JpaRepository<Book, Long> {
 //    List<Book> findByGenreIgnoreCase(String genre);
 //}
