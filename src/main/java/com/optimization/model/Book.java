@@ -5,10 +5,12 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import org.springframework.boot.autoconfigure.jackson.JacksonProperties;
 
+import java.io.Serializable;
+
 @Data
 @Entity
 @Table(indexes = @Index(name = "idx_genre", columnList = "genre"))
-public class Book {
+public class Book implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

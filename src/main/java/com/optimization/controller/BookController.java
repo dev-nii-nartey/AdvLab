@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,21 +21,21 @@ public class BookController {
 
     @GetMapping
 //    @Cacheable("allBooksCache")
-    public List<Book> getAllBooks() {
-        return bookService.getAllBooks();
+    public ResponseEntity<List<Book>> getAllBooks() {
+        return ResponseEntity.ok(bookService.getAllBooks());
     }
 
     @GetMapping("/recommendations/{genre}")
-    @Cacheable(value = "recommendationsCache", key = "#genre")
-    public List<Book> getRecommendations(@PathVariable String genre) {
-        return bookService.getRecommendations(genre);
+//    @Cacheable(value = "recommendationsCache", key = "#genre")
+    public ResponseEntity<List<Book>> getRecommendations(@PathVariable String genre) {
+        return ResponseEntity.ok(bookService.getRecommendations(genre));
     }
 
 
     @PostMapping
-    @CacheEvict(value = {"allBooks", "recommendationsCache"}, allEntries = true)
+//    @CacheEvict(value = {"allBooksCache", "recommendationsCache"}, allEntries = true)
     public String addBook(@Valid @RequestBody Book book) {
-       return bookService.addBook(book);
+        return bookService.addBook(book);
     }
 }
 

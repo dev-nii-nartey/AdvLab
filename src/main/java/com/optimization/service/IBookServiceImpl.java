@@ -5,12 +5,14 @@ import com.optimization.model.Book;
 import com.optimization.repos.BookRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 
+@Slf4j
 @AllArgsConstructor
 @Service
 public class IBookServiceImpl implements IBookService {
@@ -20,6 +22,7 @@ public class IBookServiceImpl implements IBookService {
 
     @Override
     public List<Book> getAllBooks() {
+        log.info("getting all books");
         return bookRepository.findAll();
     }
 
@@ -36,7 +39,7 @@ public class IBookServiceImpl implements IBookService {
             throw new BookAlreadyExistException("A book with the title: " + book.getTitle() + " by author: " + book.getAuthor() + " already exists");
         }
         bookRepository.save(book);
-        return book.getTitle() + " is created successfully";
+        return book.getTitle() + " movie is created successfully";
     }
 }
 
