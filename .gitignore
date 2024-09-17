@@ -31,9 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+application-dev.properties
 
-keystore.p12
-application-dev*
-**/
-
-
+volume
