@@ -19,7 +19,7 @@ public class BookController {
     private IBookServiceImpl bookService;
 
     @GetMapping
-//    @Cacheable("allBooksCache")
+   @Cacheable("allBooksCache")
     public List<Book> getAllBooks() {
         return bookService.getAllBooks();
     }
@@ -32,7 +32,7 @@ public class BookController {
 
 
     @PostMapping
-    @CacheEvict(value = {"allBooks", "recommendationsCache"}, allEntries = true)
+    @CacheEvict(value = {"allBooksCache", "recommendationsCache"}, allEntries = true)
     public String addBook(@Valid @RequestBody Book book) {
        return bookService.addBook(book);
     }

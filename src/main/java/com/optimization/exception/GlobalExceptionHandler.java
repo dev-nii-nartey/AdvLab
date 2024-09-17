@@ -29,7 +29,7 @@ public class GlobalExceptionHandler {
 
     //CATCHING BOOK EXIST AND DUPLICATE EXCEPTION
     @ExceptionHandler(BookAlreadyExistException.class)
-    public ResponseEntity<String> handleDoctorAlreadyExistsException(BookAlreadyExistException ex) {
+    public ResponseEntity<String> handleBookAlreadyExistsException(BookAlreadyExistException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
     }
 
