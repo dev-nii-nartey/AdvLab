@@ -28,19 +28,31 @@ public class IBookServiceImpl implements IBookService {
 
     @Override
     public List<Book> getRecommendations(String genre) {
+        log.info("Getting recommendations from database");
         return bookRepository.findByGenreIgnoreCase(genre);
     }
+
+
+    @Override
+    public Optional<Book> getBookById(Long id) {
+        log.info("Getting Book with id "+ id +" from database");
+        return bookRepository.findById(id);
+    }
+
 
     @Override
     @Transactional
     public String addBook(Book book) {
         Optional<Book> existingBook = bookRepository.findByTitleAndAuthor(book.getTitle(), book.getAuthor());
         if (existingBook.isPresent()) {
+            log.info("Book already exists");
             throw new BookAlreadyExistException("A book with the title: " + book.getTitle() + " by author: " + book.getAuthor() + " already exists");
         }
         bookRepository.save(book);
         return book.getTitle() + " is created successfully";
     }
+
+
 }
 
 
