@@ -1,46 +1,44 @@
 package com.optimization.service;
 
-import com.optimization.exception.BookAlreadyExistException;
 import com.optimization.model.Book;
-import com.optimization.repos.BookRepository;
-import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.concurrent.atomic.AtomicLong;
 
-
-@Slf4j
-@AllArgsConstructor
 @Service
 public class IBookServiceImpl implements IBookService {
 
-
-    private BookRepository bookRepository;
+    private final List<Book> datastore = new ArrayList<>();
+    private final AtomicLong idGenerator = new AtomicLong();
 
     @Override
     public List<Book> getAllBooks() {
-        log.info("getting all books");
-        return bookRepository.findAll();
+        return new ArrayList<>(datastore);
     }
 
     @Override
-    public List<Book> getRecommendations(String genre) {
-        return bookRepository.findByGenreIgnoreCase(genre);
-    }
-
-    @Override
-    @Transactional
-    public String addBook(Book book) {
-        Optional<Book> existingBook = bookRepository.findByTitleAndAuthor(book.getTitle(), book.getAuthor());
-        if (existingBook.isPresent()) {
-            throw new BookAlreadyExistException("A book with the title: " + book.getTitle() + " by author: " + book.getAuthor() + " already exists");
+    public Book addBook(Book book) {
+        if (book == null || book.getTitle() == null || book.getAuthor() == null) {
+            return null;
         }
-        bookRepository.save(book);
-        return book.getTitle() + " movie is created successfully";
+        book.setId(idGenerator.incrementAndGet());
+        datastore.add(book);
+        return book;
+    }
+
+
+    @Override
+    public void deleteBook(Long id) {
+        datastore.removeIf(book -> book.getId().equals(id));
+    }
+
+    @Override
+    public Book findBookById(Long id) {
+        return datastore.stream()
+                .filter(book -> book.getId().equals(id))
+                .findFirst()
+                .orElse(null);
     }
 }
-
-
